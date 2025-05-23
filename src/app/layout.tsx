@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useMemo, createContext, useEffect, ReactNode } from 'react';
+import { useState, useMemo, useEffect, ReactNode } from 'react';
 import { CssBaseline, ThemeProvider, createTheme, Box } from '@mui/material';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import ColorModeContext from '../context/ColorModeContext';
 import './globals.css';
 
 // Constants for theme colors and layout
@@ -14,16 +15,6 @@ const DARK_BG = '#1a1a1a';
 const DARK_PAPER = '#242424';
 const LIGHT_BG = '#f8f9fa';
 const LIGHT_PAPER = '#ffffff';
-
-// Context for managing color mode (light/dark)
-interface ColorModeContextType {
-  toggleColorMode: () => void;
-  mode: 'light' | 'dark';
-}
-const ColorModeContext = createContext<ColorModeContextType>({
-  toggleColorMode: () => {},
-  mode: 'dark',
-});
 
 // Props for the RootLayout component
 interface RootLayoutProps {
@@ -161,5 +152,3 @@ export default function RootLayout({ children }: RootLayoutProps) {
     </html>
   );
 }
-
-export { ColorModeContext };

@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import { IconButton } from '@mui/material';
-import { ColorModeContext } from '@/app/layout';
+import ColorModeContext from '@/context/ColorModeContext';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 

@@ -1,5 +1,3 @@
-'use client';
-
 import { notFound } from 'next/navigation';
 import { songs } from '@/data/songs';
 import { Box, Typography, Card, CardMedia, CardContent } from '@mui/material';

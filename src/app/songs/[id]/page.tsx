@@ -32,11 +32,11 @@ export default function SongPage({ params }: SongPageProps) {
             <b>Duration:</b> {song.duration}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            <b>History:</b> {song.history}
+            <b>History:</b> {song.history.replace(/'/g, "&apos;")}
           </Typography>
           {song.artistReason && (
             <Typography variant="body2" sx={{ mt: 2 }}>
-              <b>Artist's Reason:</b> {song.artistReason}
+              <b>Artist&apos;s Reason:</b> {song.artistReason}
             </Typography>
           )}
         </CardContent>

@@ -9,9 +9,13 @@ const MusicCards = () => {
     const [like, setLike] = useState<Set<string>>(new Set());
 
     const likeHandler = (id: string) => {
-        setLike(prev => {
+        setLike((prev) => {
             const next = new Set(prev);
-            next.has(id) ? next.delete(id) : next.add(id)
+            if (next.has(id)) {
+                next.delete(id);
+            } else {
+                next.add(id);
+            }
             return next;
         });
     };

@@ -9,7 +9,7 @@ const UserPage = () => {
   const pathname = usePathname();
 
   // Extract userId from the pathname (e.g., /alice -> alice)
-  const userId = pathname.split('/').pop();
+  const userId = pathname.split('/').pop() ?? null;
 
   // Apply CSS variables dynamically for the user
   useApplyCSS(userId);

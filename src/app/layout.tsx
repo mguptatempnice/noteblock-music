@@ -572,6 +572,97 @@
 //   );
 // }
 
+// 'use client';
+
+// import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+// import { CssBaseline, ThemeProvider, createTheme, Box } from '@mui/material';
+// import Navbar from '../components/Navbar';
+// import Sidebar from '../components/Sidebar';
+// import ColorModeContext from '../context/ColorModeContext';
+// import './globals.css';
+
+// const drawerWidth = 400;
+
+// export default function RootLayout({ children }: { children: ReactNode }) {
+//   const [mode, setMode] = useState<'light' | 'dark'>('dark');
+
+//   // Memoized Material-UI theme based on the current mode
+//   const theme = useMemo(() => {
+//     const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color') || (mode === 'dark' ? '#8e24aa' : '#1976d2');
+//     const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color') || (mode === 'dark' ? '#ab47bc' : '#64b5f6');
+//     const backgroundDefault = getComputedStyle(document.documentElement).getPropertyValue('--bg-default') || (mode === 'dark' ? '#1a1a1a' : '#f8f9fa');
+//     const backgroundPaper = getComputedStyle(document.documentElement).getPropertyValue('--bg-paper') || (mode === 'dark' ? '#242424' : '#ffffff');
+//     const textPrimary = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || (mode === 'dark' ? '#ffffff' : '#212121');
+
+//     return createTheme({
+//       palette: {
+//         mode,
+//         primary: {
+//           main: primaryColor,
+//         },
+//         secondary: {
+//           main: accentColor,
+//         },
+//         background: {
+//           default: backgroundDefault,
+//           paper: backgroundPaper,
+//         },
+//         text: {
+//           primary: textPrimary,
+//         },
+//       },
+//     });
+//   }, [mode]);
+
+//   // Memoized color mode context value
+//   const colorMode = useMemo(
+//     () => ({
+//       toggleColorMode: () => {
+//         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+//       },
+//       mode,
+//     }),
+//     [mode]
+//   );
+
+//   // Apply Tailwind CSS classes to the body based on the current theme mode
+//   useEffect(() => {
+//     document.body.className =
+//       mode === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900';
+//   }, [mode]);
+
+//   return (
+//     <html lang="en">
+//       <body className={`${mode === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'} font-inter`}>
+//         <ColorModeContext.Provider value={colorMode}>
+//           <ThemeProvider theme={theme}>
+//             <CssBaseline />
+//             <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+//               <Navbar />
+//               {/* Ensure Sidebar is always rendered */}
+//               <Sidebar />
+//               <Box
+//                 component="main"
+//                 sx={{
+//                   flexGrow: 1,
+//                   p: 0,
+//                   mt: '64px',
+//                   width: { sm: `calc(100% - ${drawerWidth}px)` },
+//                   ml: { sm: 1 },
+//                   mr: { sm: 1 },
+//                   overflow: 'hidden',
+//                 }}
+//               >
+//                 {children}
+//               </Box>
+//             </Box>
+//           </ThemeProvider>
+//         </ColorModeContext.Provider>
+//       </body>
+//     </html>
+//   );
+// }
+
 'use client';
 
 import React, { useState, useMemo, useEffect, ReactNode } from 'react';
@@ -588,6 +679,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   // Memoized Material-UI theme based on the current mode
   const theme = useMemo(() => {
+    if (typeof window === 'undefined') {
+      // Default theme for SSR
+      return createTheme({
+        palette: {
+          mode,
+          primary: { main: mode === 'dark' ? '#8e24aa' : '#1976d2' },
+          secondary: { main: mode === 'dark' ? '#ab47bc' : '#64b5f6' },
+          background: {
+            default: mode === 'dark' ? '#1a1a1a' : '#f8f9fa',
+            paper: mode === 'dark' ? '#242424' : '#ffffff',
+          },
+          text: { primary: mode === 'dark' ? '#ffffff' : '#212121' },
+        },
+      });
+    }
+
+    // Client-side theme using CSS variables
     const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color') || (mode === 'dark' ? '#8e24aa' : '#1976d2');
     const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color') || (mode === 'dark' ? '#ab47bc' : '#64b5f6');
     const backgroundDefault = getComputedStyle(document.documentElement).getPropertyValue('--bg-default') || (mode === 'dark' ? '#1a1a1a' : '#f8f9fa');
@@ -597,19 +705,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     return createTheme({
       palette: {
         mode,
-        primary: {
-          main: primaryColor,
-        },
-        secondary: {
-          main: accentColor,
-        },
-        background: {
-          default: backgroundDefault,
-          paper: backgroundPaper,
-        },
-        text: {
-          primary: textPrimary,
-        },
+        primary: { main: primaryColor },
+        secondary: { main: accentColor },
+        background: { default: backgroundDefault, paper: backgroundPaper },
+        text: { primary: textPrimary },
       },
     });
   }, [mode]);
@@ -639,7 +738,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <CssBaseline />
             <Box sx={{ display: 'flex', minHeight: '100vh' }}>
               <Navbar />
-              {/* Ensure Sidebar is always rendered */}
               <Sidebar />
               <Box
                 component="main"

@@ -52,6 +52,7 @@ const Navbar = () => {
     <AppBar
       position="fixed"
       sx={{
+        
         zIndex: theme.zIndex.drawer + 1,
         backgroundColor: 'var(--bg-paper)', // Use CSS variable for background
         color: 'var(--text-primary)', // Use CSS variable for text color

@@ -46,7 +46,7 @@ const Navbar = () => {
   const pathname = usePathname();
 
   // Check if the current route is a user-specific route
-  const isUserRoute = pathname.startsWith('/alice') || pathname.startsWith('/bob') || pathname.startsWith('/charlie');
+  const isUserRoute = pathname?.startsWith('/alice') || pathname?.startsWith('/bob') || pathname?.startsWith('/charlie');
 
   return (
     <AppBar

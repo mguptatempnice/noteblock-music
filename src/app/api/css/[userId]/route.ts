@@ -5,7 +5,16 @@
 //   req: Request,
 //   { params }: { params: { userId: string } }
 // ) {
-//   const { userId } = params; // Extract the username from the route (e.g., /alice -> userId = "alice")
+//   const { userId } = params;
+
+//   // Ensure userId is valid
+//   if (!userId || typeof userId !== 'string') {
+//     console.error('Invalid or missing userId:', userId);
+//     return NextResponse.json(
+//       { error: 'Invalid or missing userId' },
+//       { status: 400 }
+//     );
+//   }
 
 //   try {
 //     // Connect to the database
@@ -13,8 +22,6 @@
 
 //     // Fetch the user's theme from the database using the username
 //     const user = await db.collection('dynamic_css').findOne({ username: userId });
-
-//     console.log(`Fetched theme for user: ${userId}`);
 
 //     if (!user) {
 //       // Return default theme if the user is not found
@@ -51,13 +58,12 @@ import { connectToDatabase } from '@/lib/db';
 
 export async function GET(
   req: Request,
-  { params }: { params: { userId: string } }
+  context: { params?: { userId?: string } } // Make params and userId optional
 ) {
-  const { userId } = params;
+  const userId = context?.params?.userId;
 
-  // Ensure userId is valid
+  // Defensive check
   if (!userId || typeof userId !== 'string') {
-    console.error('Invalid or missing userId:', userId);
     return NextResponse.json(
       { error: 'Invalid or missing userId' },
       { status: 400 }
@@ -65,14 +71,10 @@ export async function GET(
   }
 
   try {
-    // Connect to the database
     const db = await connectToDatabase();
-
-    // Fetch the user's theme from the database using the username
     const user = await db.collection('dynamic_css').findOne({ username: userId });
 
     if (!user) {
-      // Return default theme if the user is not found
       return NextResponse.json(
         {
           'primary-color': '#8e24aa',
@@ -85,7 +87,6 @@ export async function GET(
       );
     }
 
-    // Return the user's theme
     return NextResponse.json(user.theme, {
       status: 200,
       headers: {
@@ -93,7 +94,6 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error('Error fetching user theme:', error);
     return NextResponse.json(
       { error: 'Internal server error.' },
       { status: 500 }

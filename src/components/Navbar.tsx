@@ -1,34 +1,3 @@
-// 'use client';
-
-// import { AppBar,Toolbar } from '@mui/material';
-// import image from '../../public/images/logo_image.png';
-// import NavLinks from './Navlinks';
-// import ThemeToggle from './ThemeToggle';
-// import Logo from './Logo';
-
-// export default function Navbar() {
-//     return(
-//       <AppBar
-//        position='fixed'
-//        sx={{
-//         zIndex:(theme)=>theme.zIndex.drawer+1,
-//         backgroundColor:(theme)=>theme.palette.background.paper,
-//         boxShadow:3,
-//         borderBottomLeftRadius:16,
-//         borderBottomRightRadius:16,
-//        }}
-//       >
-//         <Toolbar sx={{justifyContent:'space-between',
-//           px:{xs:2 , sm:3}
-//         }}>
-//          <Logo src={image.src} alt="logo" width={100} height={40}  />
-//          <NavLinks/>
-//          <ThemeToggle/>
-//         </Toolbar>
-//       </AppBar>
-//     );
-// }
-
 'use client';
 
 import React from 'react';
@@ -45,17 +14,20 @@ const Navbar = () => {
   const colorMode = useContext(ColorModeContext);
   const pathname = usePathname();
 
-  // Check if the current route is a user-specific route
-  const isUserRoute = pathname?.startsWith('/alice') || pathname?.startsWith('/bob') || pathname?.startsWith('/charlie');
+  // Check if the current route is a user-specific route (e.g., "/alice", "/bob", etc.)
+  // Exclude known static routes like "/", "/about", etc.
+  const isUserRoute =
+    pathname &&
+    /^\/[^/]+$/.test(pathname) && // matches "/something" but not "/something/else"
+    !['/', '/about'].includes(pathname);
 
   return (
     <AppBar
       position="fixed"
       sx={{
-        
         zIndex: theme.zIndex.drawer + 1,
-        backgroundColor: 'var(--bg-paper)', // Use CSS variable for background
-        color: 'var(--text-primary)', // Use CSS variable for text color
+        backgroundColor: 'var(--bg-paper)',
+        color: 'var(--text-primary)',
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
       }}
     >
@@ -72,7 +44,7 @@ const Navbar = () => {
           <Button
             href="/"
             sx={{
-              color: 'var(--accent-color)', // Match the album name color
+              color: 'var(--accent-color)',
               fontWeight: 'bold',
             }}
           >
@@ -81,7 +53,7 @@ const Navbar = () => {
           <Button
             href="/about"
             sx={{
-              color: 'var(--accent-color)', // Match the album name color
+              color: 'var(--accent-color)',
               fontWeight: 'bold',
             }}
           >

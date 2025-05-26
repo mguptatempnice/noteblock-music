@@ -101,7 +101,7 @@ const useApplyCSS = (userId: string | null) => {
                 key.replace(/([A-Z])/g, '-$1').toLowerCase(), // Convert camelCase to kebab-case
                 value,
               ])
-            );
+            ) as typeof defaultDarkTheme;
           } else {
             console.warn(`No theme found for user: ${userId}, applying default theme.`);
           }
